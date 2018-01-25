@@ -10,7 +10,29 @@
 		<h1>Doggo Trivia!</h1>
 	</header>
 
-	<div>Time Left: <span id="count-down">15</span></div>
+	<div>
+		<button id="start">Start</button>
+	</div>
+	
+	<div>
+		Time Left: <span id="count-down">5</span>
+	</div>
+	
+	<div id="questions"></div>
+
+	<div>
+		<input type="radio" id="a" name="answers"><label for="a"></label>
+		<br>
+		<input type="radio" id="b" name="answers"><label for="b"></label>
+		<br>
+		<input type="radio" id="c" name="answers"><label for="c"></label>
+		<br>
+		<input type="radio" id="d" name="answers"><label for="d"></label>
+		<br>
+		<button id="next">Next</button>
+	</div>
+
+	
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
