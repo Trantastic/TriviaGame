@@ -1,7 +1,8 @@
-var correct;
-var wrong;
+var correct = 0;
+var incorrect = 0;
 var count = 0;
 var timer = 11;
+var questionCycle;
 
 // Objects in an array. Holds questions, answers, and options
 var triviaBank = 
@@ -35,64 +36,69 @@ var triviaBank =
 {"question": "Which fact is true about dogs?",
 "answer": "All of the above.",
 "options": ["They are a Hooman’s best friend.", "Are better than cats.", "Have evolved to recognize pointing and reading facial expressions.", "All of the above."]}];
+
 startGame();
 // Creates the start button, which triggers game start
 function startGame(){
+	$("div").empty();
+	$("#start-gif").html('<iframe src="https://giphy.com/embed/l41YtpfA6fY3Fj1Re" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/stickers/jonny-skater-dog-sk8r-l41YtpfA6fY3Fj1Re">via GIPHY</a></p>');
 	$("#start").html("<button>Click to Start</button>");
 	$("#start").on("click", function(){
 		//Erases start button when trivia starts
-		$("#start").empty();
+		$("div").empty();
 		$("#questions").html("<div>" + triviaBank[count].question + "</div>");
+		for(var i = 0; i < 4; i++){
+				$("#options").append("<button>" + triviaBank[count].options[i] + "</button>");
+			}
 		// New question every 15 sec
 		var questionCycle = setInterval(nextQuestion, 1000 * 11);
-
-		count++;
-
-		countDown();
-
-			// This will display options dependant on var count
-			$("#options").append("<button>" + triviaBank[count].options[i] + "</button>");		
+		countDown();	
 	});
 }
 
 function nextQuestion(){
-	console.log(count);
 	count++;
-	
 
-	if(timer === 0){
+	if(timer === 0 && count !== 9){
 		timer = 11;
 		countDown();
+		// Empties the div with previous answer options
+		$("#options").empty();
 	}
+	//Goes straight to results page after 10 questions
+	else if(count === 9){
+		clearInterval(questionCycle);
+		results();
+		return;
+	}
+
 	$("#questions").html("<div>" + triviaBank[count].question + "</div>");
-
-	// if(count === 10){
-	// clearInterval(questionCycle);
-	// 	//call function for result page
-	// }
-
+	// This will display options dependant on var count
+	for(var i = 0; i < 4; i++){
+		$("#options").append("<button>" + triviaBank[count].options[i] + "</button>");
+	}
 }
 
-// function triggers count down displayed in UI
+// Function triggers count down displayed in UI
 function countDown(){
 	timer--;
-	console.log(timer);
-	
-	// setInterval(countDown, 1000);
+
 	if(timer > 0){
 		setTimeout(countDown , 1000);
 		// call function to show gif/image page
 	}
-	// if timer runs out go on to next page
-	// if(timer === 0){
-	// 	// call function to show gif/image page
-	// 	timer = 5;
-	// 	// countDown();
-	// }
-
-	$("#count-down").html(timer);
+	$("#count-down").html("<div>Time Left: " + timer + "</div>");
 }
 
+// Triggers results page with correct/incorrect
+function results(){
+	$("div").empty();
+	$("#correct").html("<div>You got " + correct + " correct!</div>");
+	$("#incorrect").html("<div>You got " + incorrect + " incorrect!</div>");
+	$("#result-gif").html('<iframe src="https://giphy.com/embed/3boPPdHk2ueo8" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/dog-puppy-dachshund-3boPPdHk2ueo8">via GIPHY</a></p>');
+	$("#again").html("<button>Play Again?</button");
+		$("#again").on("click", startGame);
+}
 
 
 
