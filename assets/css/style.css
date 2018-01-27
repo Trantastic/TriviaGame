@@ -10,7 +10,7 @@ h1 {
 }
 
 .jumbotron {
-	background: #F8F8F8;
+	background: rgba(204, 204, 204, 0.7);
 	height: 40em;
 	width: 50em;
 	margin-top: 5em;
@@ -40,4 +40,5 @@ img {
 button {
 	display: block;
 	margin: 0 auto;
+	margin-top: 20px;
 }

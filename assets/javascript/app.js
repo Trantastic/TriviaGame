@@ -87,17 +87,20 @@ function startGame() {
         for (var i = 0; i < 4; i++) {
             $("#options").append("<button>" + triviaBank[count].options[i] + "</button>");
         }
-        // New question every 15 sec
-
-        var questionCycle = setInterval(nextQuestion, 1000 * 11);
-        countDown();
-        initiateAnswer();
+        // New question every 10 sec
+        if(count < 10){
+            var questionCycle = setInterval(nextQuestion, 1000 * 11);
+            countDown();
+            initiateAnswer();
+        }
     });
 }
 
 function nextQuestion() {
     count++;
     $("section").empty();
+    console.log(incorrect);
+    console.log(correct);
 
     if (timer === 0 && count <= 9) {
         $("#questions").html("<div>" + triviaBank[count].question + "</div>");
@@ -115,7 +118,9 @@ function nextQuestion() {
     }
     // This will display options dependant on var count
     for (var i = 0; i < 4; i++) {
-        $("#options").append("<button>" + triviaBank[count].options[i] + "</button>");
+        if(count < 10){
+            $("#options").append("<button>" + triviaBank[count].options[i] + "</button>");
+        }
     }
 }
 
@@ -152,8 +157,8 @@ function initiateAnswer() {
         $("section").empty();
         $("#incorrect").append("You ran out of time. The right answer is " + triviaBank[count].answer + "!");
         $("#correct").append(resultImages[count]);
-        incorrect++;
         clearInterval(questionCycle);
+
     }
     $("button").on("click", function() {
         if ($(this)[0].innerText === triviaBank[count].answer) {
