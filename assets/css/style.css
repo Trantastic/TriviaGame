@@ -31,3 +31,13 @@ button {
 #count-down, #questions {
 	font-size: 25px;
 }
+
+img {
+	height: 400px;
+	width: 400px;
+}
+
+button {
+	display: block;
+	margin: 0 auto;
+}
