@@ -3,6 +3,8 @@ var incorrect = 0;
 var count = 0;
 var timer = 11;
 var questionCycle;
+var triviaTimer = true;
+
 
 // Objects in an array. Holds questions, answers, and options
 var triviaBank = 
@@ -37,22 +39,36 @@ var triviaBank =
 "answer": "All of the above.",
 "options": ["They are a Hooman’s best friend.", "Are better than cats.", "Have evolved to recognize pointing and reading facial expressions.", "All of the above."]}];
 
+var resultImages = ['<iframe src="https://giphy.com/embed/GNZm74drwTkDm" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/GNZm74drwTkDm">via GIPHY</a></p>',
+'<iframe src="https://giphy.com/embed/u8B3oAJRmAgIU" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/pup-u8B3oAJRmAgIU">via GIPHY</a></p>',
+'<iframe src="https://giphy.com/embed/K3xt5Z4FxCLsY" width="480" height="313" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/dog-walking-K3xt5Z4FxCLsY">via GIPHY</a></p>',
+'<iframe src="https://giphy.com/embed/LdPoviVCWgLf2" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/LdPoviVCWgLf2">via GIPHY</a></p>',
+'<iframe src="https://giphy.com/embed/26FeXjgN0RbzXqfx6" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/what-japan-song-26FeXjgN0RbzXqfx6">via GIPHY</a></p>',
+'<iframe src="https://giphy.com/embed/lABlHNPhzBQgE" width="480" height="327" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/boop-snoot-updoots-lABlHNPhzBQgE">via GIPHY</a></p>',
+'<iframe src="https://giphy.com/embed/2k353aEp9K6EU" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/time-purrito-2k353aEp9K6EU">via GIPHY</a></p>',
+'assets/images/weRateDogs.jpg', 
+'assets/images/weRateDogs.jpg',
+'<iframe src="https://giphy.com/embed/26FPqut4lzK3AECEo" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/cheezburger-dog-cage-fluff-26FPqut4lzK3AECEo">via GIPHY</a></p>'];
+
 startGame();
+
 // Creates the start button, which triggers game start
 function startGame(){
-	$("div").empty();
-	$("#start-gif").html('<iframe src="https://giphy.com/embed/l41YtpfA6fY3Fj1Re" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/stickers/jonny-skater-dog-sk8r-l41YtpfA6fY3Fj1Re">via GIPHY</a></p>');
+	$("section").empty();
+	$("#start-img").html('<a href="https://imgflip.com/i/23dssx"><img src="https://i.imgflip.com/23dssx.jpg" title="made at imgflip.com"/></a>');
 	$("#start").html("<button>Click to Start</button>");
 	$("#start").on("click", function(){
 		//Erases start button when trivia starts
-		$("div").empty();
+		$("section").empty();
 		$("#questions").html("<div>" + triviaBank[count].question + "</div>");
 		for(var i = 0; i < 4; i++){
-				$("#options").append("<button>" + triviaBank[count].options[i] + "</button>");
+			$("#options").append("<button>" + triviaBank[count].options[i] + "</button>");
 			}
 		// New question every 15 sec
+		
 		var questionCycle = setInterval(nextQuestion, 1000 * 11);
 		countDown();	
+		initiateAnswer();
 	});
 }
 
@@ -62,6 +78,7 @@ function nextQuestion(){
 	if(timer === 0 && count !== 9){
 		timer = 11;
 		countDown();
+		initiateAnswer();
 		// Empties the div with previous answer options
 		$("#options").empty();
 	}
@@ -69,7 +86,6 @@ function nextQuestion(){
 	else if(count === 9){
 		clearInterval(questionCycle);
 		results();
-		return;
 	}
 
 	$("#questions").html("<div>" + triviaBank[count].question + "</div>");
@@ -81,26 +97,77 @@ function nextQuestion(){
 
 // Function triggers count down displayed in UI
 function countDown(){
-	timer--;
+	
+	if(triviaTimer){
+		timer--;
 
-	if(timer > 0){
-		setTimeout(countDown , 1000);
-		// call function to show gif/image page
+		if(timer > 0){
+			setTimeout(countDown , 1000);
+		}
+		else if(timer === 0){
+			clearInterval(questionCycle);
+			initiateAnswer();
+			triviaTimer = false;
+		}
+		$("#count-down").html("<div><b>Time Left: " + timer + "<b></div>");
 	}
-	$("#count-down").html("<div>Time Left: " + timer + "</div>");
 }
 
 // Triggers results page with correct/incorrect
 function results(){
-	$("div").empty();
+	$("section").empty();
 	$("#correct").html("<div>You got " + correct + " correct!</div>");
 	$("#incorrect").html("<div>You got " + incorrect + " incorrect!</div>");
 	$("#result-gif").html('<iframe src="https://giphy.com/embed/3boPPdHk2ueo8" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/dog-puppy-dachshund-3boPPdHk2ueo8">via GIPHY</a></p>');
 	$("#again").html("<button>Play Again?</button");
+		// Calls startGame if clicked
 		$("#again").on("click", startGame);
 }
 
+function initiateAnswer(){ 
+	if(timer === 0){
+		$("section").empty();
+		$("#incorrect").append("You ran out of time. The right answer is " + triviaBank[count].answer + "!");
+		$("#correct").append(resultImages[count]);
+		incorrect++;
+		clearInterval(questionCycle);
+	}
 
+
+	$("button").on("click", function(){
+		if($(this)[0].innerText === triviaBank[count].answer){
+			$("section").empty();
+			$("#correct").append("Woohoo! Congratulations. You got it right!");
+			$("#correct").append(resultImages[count]);
+			correct++;
+			clearInterval(questionCycle);
+			triviaTimer = false;
+			
+			console.log(timer);
+		}
+		else{
+			$("section").empty();
+			$("#incorrect").append("You got it wrong. The right answer is " + triviaBank[count].answer + "!");
+			$("#correct").append(resultImages[count]);
+			incorrect++;
+			clearInterval(questionCycle);
+			triviaTimer = false;
+			
+			console.log(timer);
+		}
+	});
+	//if correct answer
+	//compare what user clicked on ==== trivia[count].answer
+		//congrats you got it right!
+		//display meme/gif
+		//after 6sec resume trivia
+	//else incorrect
+		//You got it wrong!
+		//display correct answer
+		//display meme/gif
+		//after 6sec resume trivia
+	// $("#answer-page").html()
+}
 
 
 
